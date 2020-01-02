@@ -3,6 +3,9 @@
   // 用来保存显示蛇的那些div
   let list = []
 
+  // 不同的颜色
+  let arrColor = ['pink', 'skyblue', 'orange', 'hotpink', 'purple', 'yellow']
+
   function Snake(width, height, direction) {
     this.width = width || 20
     this.height = height || 20
@@ -54,7 +57,7 @@
   }
 
   // 让蛇移动
-  Snake.prototype.move = function () {
+  Snake.prototype.move = function (food, map) {
     //蛇头根据方向移动，之后的身体是根据上一节身体移动的
 
     // 蛇身子的移动
@@ -79,6 +82,27 @@
         this.body[0].y++
         break
     }
+
+    // 蛇有没有吃到食物，蛇头的坐标和食物的坐标重叠
+    let snakeHeadX = this.body[0].x * this.width
+    let snakeHeadY = this.body[0].y * this.height
+
+    let foodX = food.x
+    let foodY = food.y
+
+    if (snakeHeadX == foodX && snakeHeadY == foodY) {
+      // 吃到食物后需要长一节身体
+      let lastUnit = this.body[this.body.length - 1]
+      this.body.push({
+        x: lastUnit.x,
+        y: lastUnit.y,
+        color: arrColor[Math.floor(Math.random() * arrColor.length)]
+      })
+
+      // 吃到食物需要产生新的食物
+      food.render(map)
+    }
+
   }
 
   window.Snake = Snake

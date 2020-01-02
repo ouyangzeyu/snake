@@ -24,7 +24,7 @@
   function autoMove () {
     // 这里需要注意this的指向问题，不用bind改变指向的话，this在setInterval中是指向window的
     let timeId = setInterval(function () {
-      this.snake.move()
+      this.snake.move(this.food, this.map)
       this.snake.render(this.map)
 
       // 判断蛇是否撞墙了，也就是蛇头到达地图边界
@@ -38,7 +38,7 @@
         alert('Game over!')
         clearInterval(timeId)
       }
-    }.bind(that), 300);
+    }.bind(that), 100);
   }
   
   // 获取按键
